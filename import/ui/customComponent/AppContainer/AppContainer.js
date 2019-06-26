@@ -138,7 +138,6 @@ const AppSwitchContainer = createSwitchNavigator({
   Dashboard:Dashboard,
   AddProfile: AddProfile,
   AddProject: AddProject,
-
 });
 
 export default (AppContainer = createAppContainer(AppSwitchContainer));

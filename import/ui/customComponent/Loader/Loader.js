@@ -1,48 +1,53 @@
-import React from "react";
-import { View, Text, Image, Animated } from "react-native";
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { ActivityIndicator, View, StyleSheet, Modal } from "react-native";
 
-class Myloader extends React.PureComponent {
+class MyLoader extends Component {
   constructor(props) {
     super(props);
-    this.loadingspin = new Animated.Value(0); 
-  };
-
- spinAnimation(){
-     this.loadingspin.setValue(0);
-     Animated.sequence([
-         Animated.timing(
-             this.loadingspin,{
-                 toValue: 1,
-                 duration: 1000
-             }
-         )
-     ]).start(()=> this.spinAnimation());
- };
-
- componentDidMount(){
-     this.spinAnimation();
- };
-
+    this.state = {
+      loading: props.loading
+    };
+  }
   render() {
-      const spin = this.loadingspin.interpolate({
-          inputRange: [0,1],
-          outputRange: ['0deg', '360deg'],
-      })
+    const { loading } = this.state;
+    console.warn("state", loading);
     return (
-      <View style={{opacity: (this.props.show || true ? 1 : 0)}}>
-        <Animated.Image  style={{ transform: [{rotate: spin}]}} source={require("../../../public/img/spinner-icon-gif-10.jpg")}/>
-      </View>
+      <Modal transparent={true} animationType={"none"} visible={loading}>
+        <View style={styles.container}>
+          <ActivityIndicator
+            animating={loading}
+            color="#fff"
+            size="large"
+            style={styles.loaderIndicator}
+          />
+        </View>
+      </Modal>
     );
   }
 }
 
-Myloader.propTypes = {};
+MyLoader.propTypes = {
+  loading: PropTypes.bool.isRequired
+};
 
-Myloader.defaultProps = {};
+MyLoader.defaultProps = {
+  loading: false
+};
 
-export default Myloader;
+export default MyLoader;
 
-const Commonstyle = StyleSheet.create({
- 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 70
+  },
+  loaderIndicator: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 80
+  }
 });
-

@@ -7,6 +7,10 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import Styles from "../../StyleSheet/CommonStyle";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import CustomButton from "../../customComponent/CustomButton/CustomButton";
+import { toDateFormatYYYYDDMM } from "../../../public/displayFormater";
+
+const date = new Date();
+const dateFormat = toDateFormatYYYYDDMM(date);
 
 class AddProfile extends React.PureComponent {
   constructor(props) {
@@ -14,14 +18,24 @@ class AddProfile extends React.PureComponent {
 
     this.state = {
       isDateTimePickerVisible: false,
-      DateValue: new Date(),
+      dateOfBrith: dateFormat,
       avatarSource: null,
+      firstName: '',
+      lastName: '',
+      emailID: '',
+      phoneNumber: '',
+      designation: '',
+      summary:'',
+      imageData: '',
+      base64Icon: '',
     };
 
     this.showDateTimePicker = this.showDateTimePicker.bind(this);
     this.hideDateTimePicker = this.hideDateTimePicker.bind(this);
     this.handleDatePicked = this.handleDatePicked.bind(this);
     this.selectPhotoTapped = this.selectPhotoTapped.bind(this);
+    this.Submit = this.Submit.bind(this);
+
   }
 
   showDateTimePicker(){
@@ -36,7 +50,9 @@ class AddProfile extends React.PureComponent {
  
   handleDatePicked (date){
     console.warn("A date has been picked: ", date);
-    this.setState({ DateValue: date });
+    let dateformat = toDateFormatYYYYDDMM(date)
+    console.warn(dateformat);
+    this.setState({ dateOfBrith:  dateformat});
     this.hideDateTimePicker();
   };
 
@@ -53,7 +69,6 @@ class AddProfile extends React.PureComponent {
 
     ImagePicker.showImagePicker(options, (response) => {
       console.warn('Response = ', response);
-
       if (response.didCancel) {
         console.warn('User cancelled photo picker');
       } else if (response.error) {
@@ -62,28 +77,42 @@ class AddProfile extends React.PureComponent {
         console.warn('User tapped custom button: ', response.customButton);
       } else {
         let source = { uri: response.uri };
-
+        let imageBase64Data = response.data
+       console.log("imageData", imageBase64Data);
         // You can also display the image using data:
         // let source = { uri: 'data:image/jpeg;base64,' + response.data };
-
+       
+        var imageItem =   `data:image/png;base64${imageBase64Data}`
+         console.warn(imageItem);
         this.setState({
           avatarSource: source,
+          imageData: imageBase64Data,
+          base64Icon: imageItem 
         });
       }
     });
   }
-
+ Submit(){
+   console.warn({
+     "imageData": this.state.imageData,
+     "firstName": this.state.firstName,
+     "lastName": this.state.lastName,
+     "designation": this.state.designation,
+     "summary": this.state.summary,
+     "phoneNumber": this.state.phoneNumber,
+     "emailId": this.state.emailID,
+     "dateOfBrith": this.state.dateOfBrith,
+   })
+ }
   render() {
     return(
         <View style={[Style.flexContainer, Style.borderColor, Styles.pd_15]}>
         <ScrollView>
+        <View style={[Style.headerSection]}>
+
         <TouchableOpacity onPress={this.selectPhotoTapped}>
           <View
-            style={[
-              Style.avatar,
-              Style.avatarContainer,
-              { marginBottom: 20 },
-            ]}
+            style={[Style.avatarContainer, Style.avatar]}
           >
             {this.state.avatarSource === null ? (
               <Text>Select a Photo</Text>
@@ -92,29 +121,35 @@ class AddProfile extends React.PureComponent {
             )}
           </View>
         </TouchableOpacity>
-          
+          </View>    
           <View>
             <TextInput style={[Styles.formLabel]}
-              placeholder="FirstName"
+              placeholder="firstName"
               placeholderTextColor="#d6d7da"
+              onChangeText={(firstName) => this.setState({firstName})}
+              value={this.state.firstName}
               />
           </View>
           <View>
             <TextInput style={[Styles.formLabel]}
               placeholder="LastName"
               placeholderTextColor="#d6d7da"
+              onChangeText={(lastName) => this.setState({lastName})}
+              value={this.state.lastName}
               />
           </View>
           <View>
           <TouchableOpacity>
              <Text style={[Styles.formLabel, Style.formLabel_picker]}
              onPress={this.showDateTimePicker}
-             >{`${this.state.DateValue}`}</Text>
+             >{`${this.state.dateOfBrith}`}</Text>
              </TouchableOpacity>
               <DateTimePicker
                 isVisible={this.state.isDateTimePickerVisible}
                 onConfirm={this.handleDatePicked}
                 onCancel={this.hideDateTimePicker}
+               // value={this.state.dateOfBrith}
+
               />
           </View>
           <View>
@@ -122,18 +157,24 @@ class AddProfile extends React.PureComponent {
               placeholder="PhoneNumber"
               keyboardType = 'numeric'
               placeholderTextColor="#d6d7da"
+              onChangeText={(phoneNumber) => this.setState({phoneNumber})}
+              value={this.state.phoneNumber}
               />
           </View>
           <View>
             <TextInput style={[Styles.formLabel]}
               placeholder="EmailID"
               placeholderTextColor="#d6d7da"
+              onChangeText={(emailID) => this.setState({emailID})}
+              value={this.state.emailID}
               />
           </View>
           <View>
             <TextInput style={[Styles.formLabel]}
               placeholder="Designation"
               placeholderTextColor="#d6d7da"
+              onChangeText={(designation) => this.setState({designation})}
+           value={this.state.designation}
               />
           </View>
           <View>
@@ -141,16 +182,21 @@ class AddProfile extends React.PureComponent {
               placeholder="profile Summary"
               placeholderTextColor="#d6d7da"
               multiline = {true}
+              onChangeText={(summary) => this.setState({summary})}
+             value={this.state.summary}
               />
           </View>
+          <Image style={{width: 50, height: 50}} source={this.state.base64Icon}/>
           <View style={[Styles.ptb_8]}>
              <CustomButton 
               text="Save"
+              onPress = {this.Submit}
              />
           </View>  
           <View style={[Styles.ptb_8]}>
               <CustomButton 
               text="Cancel"
+              onPress={() => this.props.navigation.navigate('Profile')}
             />
           </View>  
           </ScrollView>
@@ -196,6 +242,7 @@ const AddProfileNavigator = createStackNavigator({
   const Style = StyleSheet.create({
     flexContainer:{
       flex: 1,
+      flexDirection: 'column',
     },
     title:{
       textAlign: 'center',
@@ -214,17 +261,25 @@ const AddProfileNavigator = createStackNavigator({
       borderBottomWidth: 5,
     },
     formLabel_picker:{
-      height: 60,
+      height: 50,
+      paddingTop: 10,
+      paddingBottom: 8,
+    },
+    headerSection:{
+      flex: 1,
+      alignItems: 'center',
+      justifyContent: 'center',   
     },
     avatarContainer: {
       borderColor: '#9B9B9B',
       borderWidth: 1 / PixelRatio.get(),
       justifyContent: 'center',
       alignItems: 'center',
+      marginBottom: 10,
     },
     avatar: {
       borderRadius: 75,
-      width: 250,
-      height: 250,
+      width: 150,
+      height: 150,
     },
   })

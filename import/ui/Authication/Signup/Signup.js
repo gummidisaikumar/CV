@@ -17,14 +17,11 @@ class Signup extends React.PureComponent {
       lastName: '',
       emailId: '',
       Password: '',
-      loading: false,
     }
     this.Submit = this.Submit.bind(this);
   }
 
   Submit(){
-    this.setState({loading: true})
-
     axios.post('https://cv-application.herokuapp.com/user/signup', {
       "firstName": this.state.firstName,
       "lastName": this.state.lastName,
@@ -57,18 +54,21 @@ class Signup extends React.PureComponent {
             placeholderTextColor="#d6d7da"
             onChangeText={(firstName) => this.setState({firstName})}
             value={this.state.firstName}
+            selectionColor={'white'}
             />
             <TextInput style={[styles.formLabel]}
             placeholder="lastName"
             placeholderTextColor="#d6d7da"
             onChangeText={(lastName) => this.setState({lastName})}
             value={this.state.lastName}
+            selectionColor={'white'}
             />
             <TextInput style={[styles.formLabel]}
             placeholder="emailId"
             placeholderTextColor="#d6d7da"
             onChangeText={(emailId) => this.setState({emailId})}
             value={this.state.emailId}
+            selectionColor={'white'}
             />
            <TextInput style={[styles.formLabel]}
            placeholder="Password"
@@ -76,6 +76,7 @@ class Signup extends React.PureComponent {
            secureTextEntry
            onChangeText={(Password) => this.setState({Password})}
             value={this.state.Password}
+            selectionColor={'white'}
             />
           </View>
          <View style={[styles.ptb_8px]}>

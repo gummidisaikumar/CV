@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { View, Text, StyleSheet, Dimensions, TextInput, Alert } from "react-native";
+import { View, Text, StyleSheet, Dimensions, Keyboard, TextInput, Alert } from "react-native";
 import CustomButton from "../../customComponent/CustomButton/CustomButton";
 import axios from "axios";
 
@@ -15,27 +15,33 @@ class Login extends React.PureComponent {
       emailId: '',
       Password: '',
     }
-    //this.handleInputChange = this.handleInputChange.bind(this);
     this.Submit = this.Submit.bind(this);
   }
 
   Submit(){
+    if(this.state.emailId != '' && this.state.password != ''){
+    Keyboard.dismiss();
     axios.post('https://cv-application.herokuapp.com/user/login', {
       "emailId": this.state.emailId,
       "password":  this.state.Password
     })
     .then((response)=>{
       if(response.data.userId){
+        console.log(response);
         this.props.navigation.navigate("DrawerComponent")
       }
     }).then((err)=>{
-      console.warn(err);
+      Alert.alert(JSON.stringify(err.data.message));
     }); 
+  }
+  else{
+    Alert.alert("please enter required field");
+  }
   }
   render() {
     return (
       <View style={[styles.flexContainer]}>
-        <View style={[styles.box, styles.headerSection]}>
+       <View style={[styles.box, styles.headerSection]}>
         <View style={[styles.logo__container]}>
           <Text style={[styles.logo_text]}>CV</Text>
         </View>
@@ -47,7 +53,7 @@ class Login extends React.PureComponent {
             placeholderTextColor="#d6d7da"
             onChangeText={(emailId) => this.setState({emailId})}
             value={this.state.emailId}
-            
+            selectionColor={'white'}
             />
            <TextInput style={[styles.formLabel]}
            placeholder="Password"
@@ -55,6 +61,7 @@ class Login extends React.PureComponent {
            secureTextEntry
            onChangeText={(Password) => this.setState({Password})}
            value={this.state.Password}
+           selectionColor={'white'}
             />
           </View>
           <View style={[styles.ptb_8px]}>
@@ -66,7 +73,7 @@ class Login extends React.PureComponent {
           <View style={[styles.ptb_8px]}>
             <CustomButton 
               text="Sing Up"
-              onPress={() => this.props.navigation.navigate("Signup")}
+              onPress={() => this.props.navigation.navigate("DrawerComponent")}
               />
           </View>  
         </View>

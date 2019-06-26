@@ -16,6 +16,7 @@ class DrawerComponent extends React.PureComponent {
     this.state = { 
       navActiveItem: ''
      }
+     this.logOut = this.logOut.bind(this);
   }
   navigateToScreen = route => () => {
     const navigateAction = NavigationActions.navigate({
@@ -24,6 +25,11 @@ class DrawerComponent extends React.PureComponent {
     this.props.navigation.dispatch(navigateAction);
     //console.warn(navigateAction.routeName);
   };
+
+  logOut(){
+    this.props.navigation.navigate("Login")
+  }
+
 
   render() {
     return (
@@ -56,7 +62,7 @@ class DrawerComponent extends React.PureComponent {
           ))}
         </View>
         <View style={[styles.box, styles.box3]}>
-          <TouchableOpacity style={styles.navItemContainer}>
+          <TouchableOpacity style={styles.navItemContainer} onPress={this.logOut}>
             <Icon name="sign-out" size={22} color="#fff">
               <Text style={styles.footerText}>Log Out</Text>
             </Icon>

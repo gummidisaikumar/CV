@@ -1,10 +1,10 @@
 {
     "logs": [
         {
-            "outputFile": "/home/saikumar/react-native-project/CV/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rXC/values-en-rXC.xml",
+            "outputFile": "/home/rahul/Desktop/CV-Native-App/CV/android/app/build/intermediates/incremental/mergeDebugResources/merged.dir/values-en-rXC/values-en-rXC.xml",
             "map": [
                 {
-                    "source": "/home/saikumar/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/906e87ddec87684370f7b5e4313109dc/res/values-en-rXC/values-en-rXC.xml",
+                    "source": "/home/rahul/.gradle/caches/transforms-1/files-1.1/support-compat-28.0.0.aar/5a878fe56932353bb4ce71e117f9852a/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2",
                         "startColumns": "4",
@@ -21,7 +21,7 @@
                     }
                 },
                 {
-                    "source": "/home/saikumar/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/e23a40dd89ae89c392a176b469c008bf/res/values-en-rXC/values-en-rXC.xml",
+                    "source": "/home/rahul/.gradle/caches/transforms-1/files-1.1/appcompat-v7-28.0.0.aar/4c33854c7dbca19d9fd220025b92fd55/res/values-en-rXC/values-en-rXC.xml",
                     "from": {
                         "startLines": "2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29",
                         "startColumns": "4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4,4",
