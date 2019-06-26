@@ -1,0 +1,4 @@
+#Sat Jun 22 10:03:39 IST 2019
+base.0=/home/saikumar/react-native-project/CV/android/app/build/intermediates/dex/debug/mergeDexDebug/out
+path.0=classes.dex
+renamed.0=classes.dex
